@@ -38,6 +38,7 @@ public class SecurityFilterChainConfig {
                                         "/swagger-ui.html")
                                 .permitAll()
                                 .requestMatchers(POST,"/api/user/create-user").permitAll()
+                                .requestMatchers(POST,"/api/user/login").permitAll()
                                 .requestMatchers(GET,"/api/v1/home/**").permitAll()
                                 .requestMatchers("/swagger-ui/index.html").permitAll()
                                 .requestMatchers(PUT,"/api/v1/kyc/update/").hasRole("USER")
