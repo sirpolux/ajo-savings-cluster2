@@ -1,13 +1,11 @@
 package com.cluster2.ajosavingscluster2.controller;
 
 import com.cluster2.ajosavingscluster2.dto.ApiResponse;
+import com.cluster2.ajosavingscluster2.dto.LoginRequest;
 import com.cluster2.ajosavingscluster2.dto.UserRequest;
 import com.cluster2.ajosavingscluster2.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/user")
@@ -22,4 +20,10 @@ public class UserController {
         return userService.signUp(userRequest);
 
     }
+
+    @PostMapping("/login")
+    public ApiResponse login(@RequestBody LoginRequest loginRequest) {
+        return userService.login(loginRequest);
+    }
+
 }
