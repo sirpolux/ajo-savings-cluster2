@@ -2,6 +2,7 @@ package com.cluster2.ajosavingscluster2.service.serviceImplementaion;
 
 import com.cluster2.ajosavingscluster2.dto.EmailDetails;
 import com.cluster2.ajosavingscluster2.service.EmailService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
@@ -10,10 +11,9 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class EmailServiceImplementation implements EmailService {
-   @Autowired
-    private JavaMailSender javaMailSender;
-
+    private final JavaMailSender javaMailSender;
     @Value("${spring.mail.username}")
     private String senderEmail;
 

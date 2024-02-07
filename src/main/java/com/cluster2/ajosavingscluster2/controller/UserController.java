@@ -18,20 +18,21 @@ import java.io.UnsupportedEncodingException;
 @RestController
 @RequestMapping("/api/user")
 @RequiredArgsConstructor
-
 public class UserController {
     public final UserService userService;
     public final PasswordService passwordService;
 
     @PostMapping("create-user")
-    public ApiResponse signUp(@RequestBody UserRequest userRequest) {
+    public ResponseEntity<ApiResponse> signUp(@RequestBody UserRequest userRequest) {
         System.out.println("path1");
+        System.out.println(userRequest);
         return userService.signUp(userRequest);
 
     }
 
     @PostMapping("/login")
     public ApiResponse login(@RequestBody LoginRequest loginRequest) {
+        System.out.println(loginRequest);
         return userService.login(loginRequest);
     }
 

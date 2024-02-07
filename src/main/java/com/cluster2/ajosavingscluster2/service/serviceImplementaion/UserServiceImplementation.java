@@ -13,16 +13,15 @@ import com.cluster2.ajosavingscluster2.service.UserService;
 import com.cluster2.ajosavingscluster2.utils.UserUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -32,31 +31,25 @@ import java.util.Optional;
 @Slf4j
 public class UserServiceImplementation implements UserService {
 
-    @Autowired
-    AuthenticationManager authenticationManager;
 
-    @Autowired
-    JwtService jwtService;
-
-    @Autowired
-    UserDetailsService userDetailsService;
-
-    @Autowired
-    PasswordEncoder passwordEncoder;
-
+    private final AuthenticationManager authenticationManager;
+    private final JwtService jwtService;
+    private final UserDetailsService userDetailsService;
+    private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final EmailService emailService;
 
     @Override
-    public ApiResponse signUp(UserRequest userRequest) {
+    public ResponseEntity<ApiResponse> signUp(UserRequest userRequest) {
         System.out.println("path2");
         Optional<User> optionalUser = userRepository.findByUsernameIgnoreCase(userRequest.getUsername());
         if (optionalUser.isPresent()) {
-            return ApiResponse.builder()
+            return new ResponseEntity(ApiResponse.builder()
                     .responseCode(UserUtils.USER_EXISTS_CODE)
                     .responseMessage(UserUtils.USER_EXISTS_MESSAGE)
-                    .build();
+                    .build(), HttpStatus.BAD_REQUEST);
         }
+
         User newUser = User.builder()
                 .firstName(userRequest.getFirstName())
                 .lastName(userRequest.getLastName())
@@ -65,7 +58,7 @@ public class UserServiceImplementation implements UserService {
                 .phoneNumber(userRequest.getPhoneNumber())
                 .password(passwordEncoder.encode(userRequest.getPassword()))
                 .role(Role.ROLE_USER)
-                .ConfirmPassword(passwordEncoder.encode(userRequest.getConfirmPassword()))
+                .confirmPassword(passwordEncoder.encode(userRequest.getConfirmPassword()))
                 .build();
 
         User savedUser = userRepository.save(newUser);
@@ -77,10 +70,11 @@ public class UserServiceImplementation implements UserService {
         emailService.sendEmailAlert(emailDetails);
 
 
-        return ApiResponse.builder()
+        return new ResponseEntity(ApiResponse.builder()
                 .responseCode(UserUtils.USER_CREATION_SUCCESS_CODE)
                 .responseMessage(UserUtils.USER_CREATION_SUCCESS_MESSAGE)
-                .build();
+                .data("New account created for \n"+userRequest.getFirstName())
+                .build(), HttpStatus.OK);
     }
 
     @Override
@@ -107,6 +101,7 @@ public class UserServiceImplementation implements UserService {
         return ApiResponse.builder()
                 .responseCode(UserUtils.LOGIN_SUCCESS_CODE)
                 .responseMessage(token)
+                .fName(((User)userDetails).getFirstName())
                 .build();
 
     }

@@ -13,4 +13,5 @@ public class ApiResponse {
     private String responseCode;
     private String responseMessage;
     private String data;
+    private String fName;
 }

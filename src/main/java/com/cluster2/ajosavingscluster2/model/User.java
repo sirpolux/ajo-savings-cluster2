@@ -1,7 +1,6 @@
 package com.cluster2.ajosavingscluster2.model;
 
 import com.cluster2.ajosavingscluster2.enums.Role;
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,7 +33,7 @@ public class User extends BaseEntity implements UserDetails {
     @Column(nullable = false)
     private String password;
     @Column(nullable = false)
-    private String ConfirmPassword;
+    private String confirmPassword;
     @Enumerated(EnumType.STRING)
     private Role role;
     @Override

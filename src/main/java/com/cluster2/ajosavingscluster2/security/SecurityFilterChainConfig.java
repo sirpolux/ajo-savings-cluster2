@@ -37,7 +37,7 @@ public class SecurityFilterChainConfig {
                                         "/webjars/**",
                                         "/swagger-ui.html")
                                 .permitAll()
-                                .requestMatchers(POST,"/api/user/create-user").permitAll()
+                                .requestMatchers(POST,"/api/user/create-user", "/api/user/password-reset-request").permitAll()
                                 .requestMatchers(POST,"/api/user/login").permitAll()
                                 .requestMatchers(GET,"/api/v1/home/**").permitAll()
                                 .requestMatchers("/swagger-ui/index.html").permitAll()
