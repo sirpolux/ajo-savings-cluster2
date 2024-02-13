@@ -1,5 +1,8 @@
 package com.cluster2.ajosavingscluster2.dto;
 
+import com.cluster2.ajosavingscluster2.model.User;
+import jakarta.persistence.Column;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,8 +14,8 @@ import java.util.Date;
 @NoArgsConstructor
 @Data
 @Builder
-public class UserKycUpdateRequest {
-    private long id;
+public class UserKycDto {
+    private Long id;
     private String gender;
     private String occupation;
     private String passport;
@@ -23,4 +26,5 @@ public class UserKycUpdateRequest {
     private Long identificationNumber;
     private String identificationDocument;
     private String proofOfAddress;
+    private User user;
 }

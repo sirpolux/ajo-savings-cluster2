@@ -2,20 +2,19 @@ package com.cluster2.ajosavingscluster2.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Date;
+
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Builder
-public class UserKyc extends BaseEntity {
+public class UserKyc  extends AuditBaseEntity {
     @OneToOne
     private User user;
     private String gender;
@@ -35,4 +34,5 @@ public class UserKyc extends BaseEntity {
     private Long identificationNumber;
     private String identificationDocument;
     private String proofOfAddress;
+
 }

@@ -1,5 +1,7 @@
 package com.cluster2.ajosavingscluster2.configuration;
 
+import com.cluster2.ajosavingscluster2.mapper.AjoGroupMapper;
+import com.cluster2.ajosavingscluster2.mapper.KycMapper;
 import com.cluster2.ajosavingscluster2.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -34,5 +36,15 @@ public class ApplicationBeanConfiguration {
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception{
         return configuration.getAuthenticationManager();
+    }
+
+    @Bean
+    public AjoGroupMapper ajoGroupMapper(){
+        return new AjoGroupMapper();
+    }
+
+    @Bean
+    public KycMapper kycMapper(){
+        return new KycMapper();
     }
 }

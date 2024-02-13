@@ -1,10 +1,7 @@
 package com.cluster2.ajosavingscluster2.controller;
 
-import com.cluster2.ajosavingscluster2.dto.ApiResponse;
-import com.cluster2.ajosavingscluster2.dto.LoginRequest;
-import com.cluster2.ajosavingscluster2.dto.PasswordResetNewPasswordRequest;
-import com.cluster2.ajosavingscluster2.dto.PasswordResetEmailRequest;
-import com.cluster2.ajosavingscluster2.dto.UserRequest;
+import com.cluster2.ajosavingscluster2.dto.*;
+import com.cluster2.ajosavingscluster2.service.AjoGroupService;
 import com.cluster2.ajosavingscluster2.service.PasswordService;
 import com.cluster2.ajosavingscluster2.service.UserService;
 import jakarta.mail.MessagingException;
@@ -21,6 +18,7 @@ import java.io.UnsupportedEncodingException;
 public class UserController {
     public final UserService userService;
     public final PasswordService passwordService;
+    public final AjoGroupService ajoGroupService;
 
     @PostMapping("create-user")
     public ResponseEntity<ApiResponse> signUp(@RequestBody UserRequest userRequest) {
@@ -55,6 +53,11 @@ public class UserController {
                 .responseMessage(resetResult)
                 .build();
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PostMapping("/create_ajo_group")
+    public ResponseEntity<AjoGroupResponse> createAjoGroup(@RequestBody AjoGroupDto ajoGroupRequest){
+        return ajoGroupService.createAjoGroup(ajoGroupRequest);
     }
 
 }

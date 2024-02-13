@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Data
 @MappedSuperclass
-public abstract class AuditBaseEntity {
+public abstract class AuditBaseEntity extends BaseEntity {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
     @Column(name = "updated_at")
