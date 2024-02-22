@@ -36,6 +36,7 @@ public class User extends BaseEntity implements UserDetails {
     private String confirmPassword;
     @Enumerated(EnumType.STRING)
     private Role role;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));

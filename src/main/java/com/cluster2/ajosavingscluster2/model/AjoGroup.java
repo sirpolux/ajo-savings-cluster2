@@ -1,6 +1,7 @@
 package com.cluster2.ajosavingscluster2.model;
 
 import com.cluster2.ajosavingscluster2.dto.AjoGroupDto;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -30,6 +31,10 @@ public class AjoGroup extends AuditBaseEntity {
     @Column(nullable = false)
     private String time;
     private  String purposeAndGoals;
+    @OneToOne
+    private User admin;
+
     @ManyToOne
-    private User user;
+    @JsonManagedReference
+    private User members;
 }

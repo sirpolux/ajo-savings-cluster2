@@ -2,6 +2,7 @@ package com.cluster2.ajosavingscluster2.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,11 +24,9 @@ public class SavingsGroup extends BaseEntity {
     private Long contributionAmount;
     @Column(nullable = false)
     private LocalDateTime expectedStartDate;
-
     @Column(nullable = false)
     private LocalDateTime expectedEndDate;
     private String duration;
-
     @Column(nullable = false)
     private Integer numberOfParticipants;
     @Column(nullable = false)
@@ -36,4 +35,8 @@ public class SavingsGroup extends BaseEntity {
     private LocalDateTime contributionTime;
     @Column(nullable = false)
     private String purposeAndGoals;
+    @OneToOne
+    private User admin;
+
+
 }
