@@ -44,9 +44,10 @@ public class UserController {
                 .build();
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
     @PostMapping("/reset-password")
     public ResponseEntity<ApiResponse> resetPassword(@RequestBody PasswordResetNewPasswordRequest newPasswordRequest,
-                                                        @RequestParam("token") String token) {
+                                                     @RequestParam("token") String token) {
         String resetResult = passwordService.resetPassword(newPasswordRequest, token);
         ApiResponse response = ApiResponse.builder()
                 .responseCode("00")
@@ -56,8 +57,15 @@ public class UserController {
     }
 
     @PostMapping("/create_ajo_group")
-    public ResponseEntity<AjoGroupResponse> createAjoGroup(@RequestBody AjoGroupDto ajoGroupRequest){
+    public ResponseEntity<AjoGroupResponse> createAjoGroup(@RequestBody AjoGroupDto ajoGroupRequest) {
         return ajoGroupService.createAjoGroup(ajoGroupRequest);
     }
 
+
+
+@PostMapping("/join_ajo_group")
+public ResponseEntity<JoinAjoGroupResponseDto> joinGroup(@RequestBody JoinAjoGroupRequestDto joinGroupRequestDto) {
+    ResponseEntity<JoinAjoGroupResponseDto> response = ajoGroupService.joinGroup(joinGroupRequestDto);
+    return response;
+    }
 }
