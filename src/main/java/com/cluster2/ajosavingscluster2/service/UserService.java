@@ -8,4 +8,6 @@ import org.springframework.http.ResponseEntity;
 public interface UserService {
     ResponseEntity<ApiResponse> signUp (UserRequest userRequest);
     ApiResponse login(LoginRequest loginRequest);
+
+
 }
