@@ -2,7 +2,10 @@ package com.cluster2.ajosavingscluster2.service.serviceImplementaion;
 
 import com.cluster2.ajosavingscluster2.dto.AjoGroupDto;
 import com.cluster2.ajosavingscluster2.dto.AjoGroupResponse;
+import com.cluster2.ajosavingscluster2.dto.JoinAjoGroupRequestDto;
+import com.cluster2.ajosavingscluster2.dto.JoinAjoGroupResponseDto;
 import com.cluster2.ajosavingscluster2.mapper.AjoGroupMapper;
+import com.cluster2.ajosavingscluster2.model.AjoGroup;
 import com.cluster2.ajosavingscluster2.model.User;
 import com.cluster2.ajosavingscluster2.repository.AjoGroupRepository;
 import com.cluster2.ajosavingscluster2.service.AjoGroupService;
@@ -14,7 +17,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -44,4 +48,51 @@ public class AjoGroupServiceImplementation implements AjoGroupService {
         }
     }
 
+    @Override
+    public ResponseEntity<JoinAjoGroupResponseDto> joinGroup(JoinAjoGroupRequestDto joinGroupRequestDto) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new JoinAjoGroupResponseDto("User is not authenticated"));
+        }
+        Object principal = authentication.getPrincipal();
+        if (!(principal instanceof User user)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new JoinAjoGroupResponseDto("User is not authenticated"));
+        }
+
+        Optional<AjoGroup> optionalGroup = ajoGroupRepository.findByGroupName(joinGroupRequestDto.getGroupName());
+        if (optionalGroup.isEmpty()) {
+            return ResponseEntity.badRequest()
+                    .body(new JoinAjoGroupResponseDto("Group " + joinGroupRequestDto.getGroupName() + " does not exist."));
+        }
+
+        AjoGroup ajoGroup = optionalGroup.get();
+        List<User> members = (List<User>) ajoGroup.getMembers();
+
+        if (members == null || members.isEmpty()) {
+            String message = "User " + user.getFirstName() + " joined group " + joinGroupRequestDto.getGroupName() + " successfully.";
+            JoinAjoGroupResponseDto responseDto = new JoinAjoGroupResponseDto(message);
+            return ResponseEntity.ok().body(responseDto);
+        } else if (members.size() == 1) {
+            User member = members.get(0);
+            if (!member.isEnabled()) {
+                return ResponseEntity.badRequest()
+                        .body(new JoinAjoGroupResponseDto("User " + member.getFirstName() + " is not enabled."));
+            }
+        } else {
+            for (User member : members) {
+                if (!member.isEnabled()) {
+                    return ResponseEntity.badRequest()
+                            .body(new JoinAjoGroupResponseDto("User " + member.getFirstName() + " is not enabled."));
+                }
+            }
+        }
+        String message = "User " + user.getFirstName() + " joined group " + joinGroupRequestDto.getGroupName() + " successfully.";
+        JoinAjoGroupResponseDto responseDto = new JoinAjoGroupResponseDto(message);
+        return ResponseEntity.ok().body(responseDto);
+    }
+
+
 }
+
