@@ -6,10 +6,15 @@ import com.cluster2.ajosavingscluster2.dto.EmailDetails;
 import com.cluster2.ajosavingscluster2.dto.LoginRequest;
 import com.cluster2.ajosavingscluster2.dto.UserRequest;
 import com.cluster2.ajosavingscluster2.enums.Role;
+import com.cluster2.ajosavingscluster2.model.GlobalWallet;
+import com.cluster2.ajosavingscluster2.model.PersonalWallet;
 import com.cluster2.ajosavingscluster2.model.User;
+import com.cluster2.ajosavingscluster2.repository.GlobalWalletRepository;
+import com.cluster2.ajosavingscluster2.repository.PersonalWalletRepository;
 import com.cluster2.ajosavingscluster2.repository.UserRepository;
 import com.cluster2.ajosavingscluster2.service.EmailService;
 import com.cluster2.ajosavingscluster2.service.UserService;
+import com.cluster2.ajosavingscluster2.service.WalletService;
 import com.cluster2.ajosavingscluster2.utils.UserUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,6 +43,9 @@ public class UserServiceImplementation implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final EmailService emailService;
+    private final WalletService walletService;
+    private final GlobalWalletRepository globalWalletRepository;
+    private final PersonalWalletRepository personalWalletRepository;
 
     @Override
     public ResponseEntity<ApiResponse> signUp(UserRequest userRequest) {
@@ -62,6 +70,18 @@ public class UserServiceImplementation implements UserService {
                 .build();
 
         User savedUser = userRepository.save(newUser);
+        String globalWallet = walletService.generateWalletNumber();
+        String personalWallet = walletService.generateWalletNumber();
+
+        GlobalWallet globalWallet1 = new GlobalWallet(savedUser);
+        globalWallet1.setWalletNumber(globalWallet);
+        globalWalletRepository.save(globalWallet1);
+
+        PersonalWallet personalWallet1 = new PersonalWallet(savedUser);
+        personalWallet1.setWalletNumber(personalWallet);
+        personalWalletRepository.save(personalWallet1);
+
+
         EmailDetails emailDetails = EmailDetails.builder()
                 .recipient(savedUser.getEmail())
                 .subject("USER CREATION")
