@@ -1,7 +1,6 @@
 package com.cluster2.ajosavingscluster2.mapper;
 
 import com.cluster2.ajosavingscluster2.dto.AjoGroupDto;
-import com.cluster2.ajosavingscluster2.dto.AjoGroupResponse;
 import com.cluster2.ajosavingscluster2.model.AjoGroup;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +15,9 @@ public class AjoGroupMapper{
                 .expectedEndDate(ajoGroupDto.getExpectedEndDate())
                 .duration(ajoGroupDto.getDuration())
                 .numberOfParticipants(ajoGroupDto.getNumberOfParticipants())
-                .time(ajoGroupDto.getTime())
+                .contributionTime(ajoGroupDto.getTime())
+                .contributionFrequency(ajoGroupDto.getContributionFrequency())
+                .purposeAndGoals(ajoGroupDto.getPurposeAndGoals())
                 .build();
     }
     public AjoGroupDto ajoGroupToAjoGroupDTO(AjoGroup ajoGroup){
@@ -29,7 +30,8 @@ public class AjoGroupMapper{
                 .expectedEndDate(ajoGroup.getExpectedEndDate())
                 .duration(ajoGroup.getDuration())
                 .numberOfParticipants(ajoGroup.getNumberOfParticipants())
-                .time(ajoGroup.getTime())
+                .time(ajoGroup.getContributionTime())
+                .contributionFrequency(ajoGroup.getContributionFrequency())
                 .build();
     }
 }

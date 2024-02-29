@@ -2,6 +2,7 @@ package com.cluster2.ajosavingscluster2.dto;
 
 
 import com.cluster2.ajosavingscluster2.model.User;
+import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,6 +26,7 @@ public class AjoGroupDto {
     private String duration;
     private Integer numberOfParticipants;
     private String time;
+    private String contributionFrequency;
     private String purposeAndGoals;
     private User user;
 }

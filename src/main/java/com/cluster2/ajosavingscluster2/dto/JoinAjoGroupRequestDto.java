@@ -13,5 +13,6 @@ import lombok.NoArgsConstructor;
 public class JoinAjoGroupRequestDto {
     private User firstName;
     private String groupName;
+    private Long groupId;
 
 }

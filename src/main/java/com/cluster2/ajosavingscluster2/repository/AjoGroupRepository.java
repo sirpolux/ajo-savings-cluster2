@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface AjoGroupRepository extends JpaRepository<AjoGroup, Long> {
     Optional<AjoGroup> findByGroupName(String groupName);
+
 }

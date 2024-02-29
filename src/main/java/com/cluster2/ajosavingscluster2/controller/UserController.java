@@ -55,17 +55,7 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PostMapping("/create_ajo_group")
-    public ResponseEntity<AjoGroupResponse> createAjoGroup(@RequestBody AjoGroupDto ajoGroupRequest){
-        return ajoGroupService.createAjoGroup(ajoGroupRequest);
-    }
 
-    @PostMapping("/join_ajo_group")
-    public ResponseEntity<JoinAjoGroupResponseDto> joinGroup(@RequestBody JoinAjoGroupRequestDto joinGroupRequestDto) {
-        ResponseEntity<JoinAjoGroupResponseDto> response = ajoGroupService.joinGroup(joinGroupRequestDto);
-        System.out.println(response);
-        return response;
-    }
 }
 
 

@@ -14,5 +14,5 @@ import lombok.NoArgsConstructor;
 @Builder
 public class GroupWallet extends WalletBaseEntity {
     @OneToOne
-    private SavingsGroup savingsGroup;
+    private AjoGroup savingsGroup;
 }

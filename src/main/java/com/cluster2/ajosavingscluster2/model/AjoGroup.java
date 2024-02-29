@@ -1,8 +1,9 @@
 package com.cluster2.ajosavingscluster2.model;
 
-import com.cluster2.ajosavingscluster2.dto.AjoGroupDto;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -10,31 +11,33 @@ import java.util.Date;
 
 
 @Entity
-@Builder
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AjoGroup extends AuditBaseEntity {
-    private String groupIcon;
-    @Column(nullable = false)
+@Getter
+@Setter
+@Builder
+public class AjoGroup extends BaseEntity {
+    @Column(nullable = false, unique = true)
     private String groupName;
+    private String groupIcon;
     @Column(nullable = false)
     private Double contributionAmount;
     @Column(nullable = false)
     private Date expectedStartDate;
     @Column(nullable = false)
     private Date expectedEndDate;
-    @Column(nullable = false)
+
     private String duration;
     @Column(nullable = false)
     private Integer numberOfParticipants;
     @Column(nullable = false)
-    private String time;
-    private  String purposeAndGoals;
-    @OneToOne
+    private String contributionFrequency;
+    @Column(nullable = false)
+    private String contributionTime;
+    @Column(nullable = false)
+    private String purposeAndGoals;
+    @ManyToOne
     private User admin;
 
-    @ManyToOne
-    @JsonManagedReference
-    private User members;
+
 }

@@ -1,19 +1,18 @@
 package com.cluster2.ajosavingscluster2.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 
 @MappedSuperclass
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 public class WalletBaseEntity extends AuditBaseEntity{
-    private String walletName;
     private String walletNumber;
-    private BigDecimal walletBalance;
+    private BigDecimal walletBalance= BigDecimal.valueOf(0.0);
 
 }
