@@ -129,12 +129,16 @@ public class AjoGroupServiceImplementation implements AjoGroupService {
         Optional<AjoGroup> optionalGroup = ajoGroupRepository.findById(joinGroupRequestDto.getGroupId());
         if (optionalGroup.isEmpty()) {
             return ResponseEntity.badRequest()
-                    .body(new JoinAjoGroupResponseDto("Group " + joinGroupRequestDto.getGroupName() + " does not exist."));
+                    .body(new JoinAjoGroupResponseDto("Group does not exist."));
         }
         AjoGroup ajoGroup = optionalGroup.get();
         Optional<GroupMember> isAlreadyAMember = groupRepository.findByAjoGroupAndUser(ajoGroup,user);
         if (isAlreadyAMember.isEmpty()) {
-            String message = "User " + user.getFirstName() + " joined group " + joinGroupRequestDto.getGroupName() + " successfully.";
+            GroupMember groupMember = new GroupMember();
+            groupMember.setAjoGroup(ajoGroup);
+            groupMember.setUser(user);
+            groupRepository.save(groupMember);
+            String message = user.getFirstName() + " joined group successfully.";
             JoinAjoGroupResponseDto responseDto = new JoinAjoGroupResponseDto(message);
             return ResponseEntity.ok().body(responseDto);
         }

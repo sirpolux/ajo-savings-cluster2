@@ -11,8 +11,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @Data
 public class JoinAjoGroupRequestDto {
-    private User firstName;
-    private String groupName;
     private Long groupId;
 
 }

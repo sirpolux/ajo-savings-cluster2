@@ -25,7 +25,7 @@ public class AjoGroupController {
         return ajoGroupService.createAjoGroup(ajoGroupRequest);
     }
 
-    @PostMapping("/join_ajo_group")
+    @PostMapping("/join")
     public ResponseEntity<JoinAjoGroupResponseDto> joinGroup(@RequestBody JoinAjoGroupRequestDto joinGroupRequestDto) {
         ResponseEntity<JoinAjoGroupResponseDto> response = ajoGroupService.joinGroup(joinGroupRequestDto);
         System.out.println(response);

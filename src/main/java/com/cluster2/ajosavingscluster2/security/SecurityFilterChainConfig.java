@@ -42,6 +42,7 @@ public class SecurityFilterChainConfig {
                                 .requestMatchers(GET,"/api/v1/home/**", "/api/kyc/dummy").permitAll()
                                 .requestMatchers("/swagger-ui/index.html").permitAll()
                                 .requestMatchers(POST,"/api/kyc/update_kyc", "/api/ajo_group/create_ajo_group").hasRole("USER")
+                                .requestMatchers(POST, "/api/ajo_group/join").hasRole("USER")
 
                 ).sessionManagement((session) ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
