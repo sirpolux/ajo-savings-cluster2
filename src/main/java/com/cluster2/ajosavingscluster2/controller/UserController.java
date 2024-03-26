@@ -4,6 +4,7 @@ import com.cluster2.ajosavingscluster2.dto.*;
 import com.cluster2.ajosavingscluster2.service.AjoGroupService;
 import com.cluster2.ajosavingscluster2.service.PasswordService;
 import com.cluster2.ajosavingscluster2.service.UserService;
+import com.cluster2.ajosavingscluster2.service.WalletService;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ public class UserController {
     public final UserService userService;
     public final PasswordService passwordService;
     public final AjoGroupService ajoGroupService;
+    public final WalletService walletService;
 
     @PostMapping("create-user")
     public ResponseEntity<ApiResponse> signUp(@RequestBody UserRequest userRequest) {
@@ -55,6 +57,12 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+
+    @PostMapping("/transfer_money")
+    public ResponseEntity<TransferResponseDto> transferMoneyToPersonalWallet(@RequestBody TransferRequestDto request) {
+        TransferResponseDto response = walletService.transferMoneyToPersonalWallet(request.getUserId(), request.getAmount());
+        return ResponseEntity.ok(response);
+    }
 
 }
 
