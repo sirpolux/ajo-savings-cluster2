@@ -35,6 +35,10 @@ public class UserController {
         System.out.println(loginRequest);
         return userService.login(loginRequest);
     }
+    @PostMapping("/credit")
+    public ApiResponse credit(@RequestBody CreditDebitWalletRequest creditDebitWalletRequest) {
+        return userService.credit(creditDebitWalletRequest);
+    }
 
     @PostMapping("/password-reset-request")
     public ResponseEntity<ApiResponse> resetPasswordRequest(@RequestBody PasswordResetEmailRequest emailRequest) throws UnsupportedEncodingException, MessagingException {

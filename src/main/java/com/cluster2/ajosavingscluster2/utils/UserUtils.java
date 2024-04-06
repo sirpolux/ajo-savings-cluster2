@@ -9,6 +9,8 @@ public class UserUtils {
     public static final String LOGIN_SUCCESS_MESSAGE="User Successfully Logged In";
     public static final String LOGIN_FAILURE_CODE="400";
     public static final String LOGIN_FAILURE_MESSAGE="Bad Credentials";
+    public static String WALLET_CREDITED_SUCCESS_CODE = "004";
+    public static String WALLET_CREDITED_SUCCESS_MESSAGE ="Your Wallet Was Successfully Credited";
 
     public static final String FORGOT_PASSWORD= "Forgot Password";
 }
