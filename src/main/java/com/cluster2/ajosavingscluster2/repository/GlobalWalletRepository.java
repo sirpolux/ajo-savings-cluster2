@@ -4,4 +4,6 @@ import com.cluster2.ajosavingscluster2.model.GlobalWallet;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface GlobalWalletRepository extends JpaRepository<GlobalWallet,Long> {
+    GlobalWallet findByUserId(Long userId);
+
 }
