@@ -1,16 +1,17 @@
 package com.cluster2.ajosavingscluster2.service.serviceImplementaion;
 
 import com.cluster2.ajosavingscluster2.configuration.JwtService;
-import com.cluster2.ajosavingscluster2.dto.ApiResponse;
-import com.cluster2.ajosavingscluster2.dto.EmailDetails;
-import com.cluster2.ajosavingscluster2.dto.LoginRequest;
-import com.cluster2.ajosavingscluster2.dto.UserRequest;
+import com.cluster2.ajosavingscluster2.dto.*;
+import com.cluster2.ajosavingscluster2.enums.AccountType;
 import com.cluster2.ajosavingscluster2.enums.Role;
+import com.cluster2.ajosavingscluster2.enums.TransactionStatus;
 import com.cluster2.ajosavingscluster2.model.GlobalWallet;
 import com.cluster2.ajosavingscluster2.model.PersonalWallet;
+import com.cluster2.ajosavingscluster2.model.Transaction;
 import com.cluster2.ajosavingscluster2.model.User;
 import com.cluster2.ajosavingscluster2.repository.GlobalWalletRepository;
 import com.cluster2.ajosavingscluster2.repository.PersonalWalletRepository;
+import com.cluster2.ajosavingscluster2.repository.TransactionRepository;
 import com.cluster2.ajosavingscluster2.repository.UserRepository;
 import com.cluster2.ajosavingscluster2.service.EmailService;
 import com.cluster2.ajosavingscluster2.service.UserService;
@@ -46,6 +47,7 @@ public class UserServiceImplementation implements UserService {
     private final WalletService walletService;
     private final GlobalWalletRepository globalWalletRepository;
     private final PersonalWalletRepository personalWalletRepository;
+    private final TransactionRepository transactionRepository;
 
     @Override
     public ResponseEntity<ApiResponse> signUp(UserRequest userRequest) {
@@ -124,5 +126,32 @@ public class UserServiceImplementation implements UserService {
                 .fName(((User)userDetails).getFirstName())
                 .build();
 
+    }
+
+    @Override
+    public ApiResponse credit(CreditDebitWalletRequest creditDebitWalletRequest) {
+        GlobalWallet globalWallet = globalWalletRepository.findByUser(getUser());
+        Transaction transaction = new Transaction();
+        globalWallet.setWalletBalance(globalWallet.getWalletBalance().add(creditDebitWalletRequest.getAmount()));
+        globalWalletRepository.save(globalWallet);
+        transaction.setTransactionAmount(creditDebitWalletRequest.getAmount());
+        transaction.setReceiverWalletNumber(globalWallet.getWalletNumber());
+        transaction.setReceiverAccountType(AccountType.PERSONAL_WALLET);
+        transaction.setTransactionStatus(TransactionStatus.COMPLETED);
+        transaction.setDescription("PERSONAL ACCOUNT FUNDING");
+        transactionRepository.save(transaction);
+        return ApiResponse.builder()
+                .responseCode(UserUtils.WALLET_CREDITED_SUCCESS_CODE)
+                .responseMessage(UserUtils.WALLET_CREDITED_SUCCESS_MESSAGE)
+                .walletInfo(WalletInfo.builder()
+                        .walletBalance(String.valueOf(globalWallet.getWalletBalance()))
+                        .build())
+                .build();
+    }
+
+    @Override
+    public User getUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return (User) authentication.getPrincipal();
     }
 }

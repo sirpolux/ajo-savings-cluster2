@@ -9,10 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ApiResponse {
-    private String responseCode;
-    private String responseMessage;
-    private WalletInfo walletInfo;
-    private String data;
-    private String fName;
+public class WalletInfo {
+    private String walletName;
+    private String walletBalance;
+    private String walletNumber;
+
 }
