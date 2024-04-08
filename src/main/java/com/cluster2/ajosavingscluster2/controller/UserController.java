@@ -1,17 +1,20 @@
 package com.cluster2.ajosavingscluster2.controller;
 
 import com.cluster2.ajosavingscluster2.dto.*;
-import com.cluster2.ajosavingscluster2.service.AjoGroupService;
-import com.cluster2.ajosavingscluster2.service.PasswordService;
-import com.cluster2.ajosavingscluster2.service.UserService;
-import com.cluster2.ajosavingscluster2.service.WalletService;
+import com.cluster2.ajosavingscluster2.model.GlobalWallet;
+import com.cluster2.ajosavingscluster2.model.GroupWallet;
+import com.cluster2.ajosavingscluster2.model.PersonalWallet;
+import com.cluster2.ajosavingscluster2.model.SafeLockWallet;
+import com.cluster2.ajosavingscluster2.service.*;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/user")
@@ -21,6 +24,8 @@ public class UserController {
     public final PasswordService passwordService;
     public final AjoGroupService ajoGroupService;
     public final WalletService walletService;
+    private final SavingsService savingsService;
+
 
     @PostMapping("create-user")
     public ResponseEntity<ApiResponse> signUp(@RequestBody UserRequest userRequest) {
@@ -67,7 +72,15 @@ public class UserController {
         TransferResponseDto response = walletService.transferMoneyToPersonalWallet(request.getUserId(), request.getAmount());
         return ResponseEntity.ok(response);
     }
+    @GetMapping ("/dashboard")
+    public SavingsResponseDto getAllSavings() {
+        List<GlobalWallet> globalWallets = savingsService.getAllGlobalWallets();
+        List<GroupWallet> groupWallets = savingsService.getAllGroupWallets();
+        List<PersonalWallet> personalWallets = savingsService.getAllPersonalWallets();
+        List<SafeLockWallet> safeLockWallets = savingsService.getAllSafeLockWallets();
 
+        return new SavingsResponseDto(globalWallets, groupWallets, personalWallets, safeLockWallets);
+    }
 }
 
 
